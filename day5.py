@@ -50,12 +50,12 @@ while True:
 
     print(f"MOVING {n} FROM {src} to {dst}")
 
-    if False:
+    if False:  # Part 1
         for i in range(0,n):
             c = stacks[src-1].pop()
             stacks[dst-1].append(c)
             pass
-    else:
+    else:    # Part 2
         c = stacks[src-1][-n:]
         stacks[src-1] = stacks[src-1][:-n]
         stacks[dst-1].extend(c)
