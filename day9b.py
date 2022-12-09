@@ -1,22 +1,19 @@
 import math 
-test="""R 4
-U 4
-L 3
-D 1
-R 4
-D 1
-L 5
-R 2"""
+test="""R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20"""
 
 
 
 if False:
     lines = test.splitlines()
 else:
-    import os
-    scriptFile=os.path.basename(__file__)
-    dataFile=f"{scriptFile[:-3]}.txt"
-    lines = open(dataFile)
+    lines = open('day9.txt')
 
 # x,y
 class Vector:
@@ -32,11 +29,14 @@ def abs( v):
 #     return abs(sub(head,tail))
 
 head = Vector(0,0)
-tail = Vector(0,0)
+tail = []
+for i in range(9):
+    tail.append(Vector(0,0))
+
 
 visited = set()
 
-visited.add((tail.x,tail.y))
+visited.add((tail[8].x,tail[8].y))
 
 for line in lines:
     direction, steps = line.split()
@@ -52,38 +52,41 @@ for line in lines:
             case 'R':
                 head.x += 1
 
-
-        delta = sub(head,tail)
-        distance = abs(delta)
-        
-        if distance >=2:
-            if (delta.x !=0) and (delta.y!=0): # Diagonal
-                if (delta.x > 0) and delta.y > 0:
-                    tail.x += 1
-                    tail.y += 1
-                if (delta.x > 0) and delta.y < 0:
-                    tail.x += 1
-                    tail.y -= 1
-                if (delta.x < 0) and delta.y > 0:
-                    tail.x -= 1
-                    tail.y += 1
-                if (delta.x < 0) and delta.y < 0:
-                    tail.x -= 1
-                    tail.y -= 1
+        for i in range(9):
+            if i==0 :
+                delta = sub(head,tail[0])
             else:
-                if (delta.x > 0): 
-                    tail.x += 1
-                if (delta.x < 0): 
-                    tail.x -= 1
-                if delta.y > 0:
-                    tail.y += 1
-                if delta.y < 0:
-                    tail.y -= 1
-        visited.add((tail.x,tail.y))
+                delta = sub(tail[i-1],tail[i])
+            distance = abs(delta)
+            
+            if distance >=2:
+                if (delta.x !=0) and (delta.y!=0): # Diagonal
+                    if (delta.x > 0) and delta.y > 0:
+                        tail[i].x += 1
+                        tail[i].y += 1
+                    if (delta.x > 0) and delta.y < 0:
+                        tail[i].x += 1
+                        tail[i].y -= 1
+                    if (delta.x < 0) and delta.y > 0:
+                        tail[i].x -= 1
+                        tail[i].y += 1
+                    if (delta.x < 0) and delta.y < 0:
+                        tail[i].x -= 1
+                        tail[i].y -= 1
+                else:
+                    if (delta.x > 0): 
+                        tail[i].x += 1
+                    if (delta.x < 0): 
+                        tail[i].x -= 1
+                    if delta.y > 0:
+                        tail[i].y += 1
+                    if delta.y < 0:
+                        tail[i].y -= 1
+            visited.add((tail[8].x,tail[8].y))
         pass
 
 
 
 
-print("Part One", len(visited))
+print("Part Two", len(visited))
 pass
