@@ -36,6 +36,8 @@ def operand(token):
 
 
 class Monkey:
+    magic = 1
+
     def __init__(self, number, items, operation, test,trueThrow, falseThrow) -> None:
         self.number = int(number)
         self.items = items
@@ -55,6 +57,7 @@ class Monkey:
 
         # Test
         self.testDivisible = int(test)
+        Monkey.magic *= self.testDivisible
 
         self.trueThrow = trueThrow
         self.falseThrow = falseThrow
@@ -62,13 +65,14 @@ class Monkey:
     # def catch(self, item):
         
 
-if True:
+if False:
     lines = data.splitlines()
 else:
     lines = open('day11.txt')
 lines = iter(lines)
 
 monkeys = []
+
 for line in lines:
     tokens = line.split()
     if tokens[0] == 'Monkey':
@@ -105,52 +109,52 @@ for line in lines:
         length = len(blank)
         if length:
             pass
-            print("ERROR")
+            # print ("ERROR")
     except:
         break  # End of file 
 
 
 n=0
-for round in range(20):
+for round in range(10000):
     n +=1
-    print('Round ', n)
+    print ('Round ', n)
     for monkey in monkeys:
-        print (f'Monkey {monkey.number}')
+        # print  (f'Monkey {monkey.number}')
         for item in list(monkey.items):
             monkey.inspections +=1
-            print(f'  Monkey inspects an item with a worry level of {item}')
+            # print (f'  Monkey inspects an item with a worry level of {item}')
             lhs = monkey.lhs if monkey.lhs else item
             rhs = monkey.rhs if monkey.rhs else item
             if monkey.operator:
                     worry = lhs + rhs
-                    print(f'    {worry} = {lhs} + {rhs}')
+                    # print (f'    {worry} = {lhs} + {rhs}')
             else:
                     worry = lhs * rhs
-                    print(f'    {worry} = {lhs} * {rhs}')
-                # print("ERROR case")
+                    # print (f'    {worry} = {lhs} * {rhs}')
+                # # print ("ERROR case")
             # worry = worry // 3 
-            # print("    Monkey gets bored with item. Worry level is divided by 3 to ", worry)
-            print(f'   worry {worry}')
+            # # print ("    Monkey gets bored with item. Worry level is divided by 3 to ", worry)
+            # print (f'   worry {worry}')
             test = (worry % monkey.testDivisible) == 0
             if test:
-                monkeys[monkey.trueThrow].items.append(worry)
-                print("    Current worry level is divisible by", monkey.testDivisible)
-                print(f"    Item with worry level {worry} is thrown to monkey {monkey.trueThrow}")
+                monkeys[monkey.trueThrow].items.append(worry % Monkey.magic)
+                # print ("    Current worry level is divisible by", monkey.testDivisible)
+                # print (f"    Item with worry level {worry} is thrown to monkey {monkey.trueThrow}")
             else:
-                monkeys[monkey.falseThrow].items.append(worry)
-                print("    Current worry level is not divisible by", monkey.testDivisible)
-                print(f"    Item with worry level {worry} is thrown to monkey {monkey.falseThrow}")
+                monkeys[monkey.falseThrow].items.append(worry % Monkey.magic)
+                # print ("    Current worry level is not divisible by", monkey.testDivisible)
+                # print (f"    Item with worry level {worry} is thrown to monkey {monkey.falseThrow}")
             monkey.items.remove(item)
 
 inspections = []
 for monkey in monkeys:
-    print(f'Monkey {monkey.number}:',end='')
+    # print (f'Monkey {monkey.number}:',end='')
     for item in monkey.items:
         pass
-        print(f'{item} ',end='')
-    print()
-    print( f'Monkey {monkey.number} inspected items {monkey.inspections} times.')
+        # print (f'{item} ',end='')
+    # print ()
+    print ( f'Monkey {monkey.number} inspected items {monkey.inspections} times.')
     inspections.append(monkey.inspections)
 
 inspections = sorted(inspections)
-print("Part One and Two", inspections[-1]* inspections[-2] )
+print ("Part One and Two", inspections[-1]* inspections[-2] )
