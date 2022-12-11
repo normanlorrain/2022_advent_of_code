@@ -44,7 +44,14 @@ class Monkey:
         # Operation are the form of {lhs} {operator} {rhs}.  We'll assume 0 means use the old number
         self.lhs = operand( operation[0])
         self.rhs = operand(operation[2])
-        self.operator = operation[1]
+        match operation[1]:
+            case '+':
+                self.operator = True
+            case '*':
+                self.operator = False
+            case _:
+                raise Exception("bad operator")
+
 
         # Test
         self.testDivisible = int(test)
@@ -52,10 +59,10 @@ class Monkey:
         self.trueThrow = trueThrow
         self.falseThrow = falseThrow
 
+    # def catch(self, item):
+        
 
-        pass
-
-if False:
+if True:
     lines = data.splitlines()
 else:
     lines = open('day11.txt')
@@ -97,32 +104,33 @@ for line in lines:
         blank = next(lines).split()
         length = len(blank)
         if length:
+            pass
             print("ERROR")
     except:
         break  # End of file 
 
 
-
+n=0
 for round in range(20):
-    n = 0
+    n +=1
+    print('Round ', n)
     for monkey in monkeys:
-        print (f'Monkey {n}')
+        print (f'Monkey {monkey.number}')
         for item in list(monkey.items):
             monkey.inspections +=1
             print(f'  Monkey inspects an item with a worry level of {item}')
             lhs = monkey.lhs if monkey.lhs else item
             rhs = monkey.rhs if monkey.rhs else item
-            match monkey.operator:
-                case '+':
+            if monkey.operator:
                     worry = lhs + rhs
                     print(f'    {worry} = {lhs} + {rhs}')
-
-                case '*':
+            else:
                     worry = lhs * rhs
                     print(f'    {worry} = {lhs} * {rhs}')
                 # print("ERROR case")
-            worry = worry // 3 
-            print("    Monkey gets bored with item. Worry level is divided by 3 to ", worry)
+            # worry = worry // 3 
+            # print("    Monkey gets bored with item. Worry level is divided by 3 to ", worry)
+            print(f'   worry {worry}')
             test = (worry % monkey.testDivisible) == 0
             if test:
                 monkeys[monkey.trueThrow].items.append(worry)
@@ -133,17 +141,16 @@ for round in range(20):
                 print("    Current worry level is not divisible by", monkey.testDivisible)
                 print(f"    Item with worry level {worry} is thrown to monkey {monkey.falseThrow}")
             monkey.items.remove(item)
-        n+=1
-
 
 inspections = []
 for monkey in monkeys:
     print(f'Monkey {monkey.number}:',end='')
     for item in monkey.items:
+        pass
         print(f'{item} ',end='')
     print()
     print( f'Monkey {monkey.number} inspected items {monkey.inspections} times.')
     inspections.append(monkey.inspections)
 
 inspections = sorted(inspections)
-print("Part One", inspections[-1]* inspections[-2] )
+print("Part One and Two", inspections[-1]* inspections[-2] )
