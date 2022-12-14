@@ -7,20 +7,17 @@ width = 15
 height = 10
 
 offset = 490
-cave=[['']* width]*height
-for y in range(height):
-    for x in range(width):
-        cave[y][x]='.'
+# cave=[['']* width]*height     # NOOOO!  This create height-size list of list OBJECTS
+cave = [['.' for x in range(width)] for y in range(height)]
     
 def printCave():
-    print('*'*width)
+    print('~'*width)
     for y in range(height):
         for x in range(width):
             print(cave[y][x],end='')
         print()
 
 
-printCave()
 
 if True:
     lines = test.splitlines()
