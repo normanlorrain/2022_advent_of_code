@@ -31,27 +31,28 @@ else:
 lines = iter(lines)
 
 def mysort( left, right):
+    print(left, right)
     if type(left) == int and type(right) ==int:
         if left < right:
-            return True
+            return -1
         elif left > right:
-            return False
+            return +1
         else:
-            return None # "Otherwise, the inputs are the same integer; continue checking the next part of the input."
+            return 0 # "Otherwise, the inputs are the same integer; continue checking the next part of the input."
     elif type(left) == list and type(right) == list:
 
         for i in range( min( len(left),len(right))):
             ret = mysort(left[i],right[i])
-            if ret==None:
+            if ret==0:
                 continue
             else:
                 return ret
         if len(left) < len(right):
-            return True
+            return -1
         elif len(right) < len(left):
-            return False
+            return +1
         else:  
-            return None
+            return 0
 
     elif type(left) == int and type(right) == list:
         return mysort([left],right)
@@ -62,24 +63,28 @@ def mysort( left, right):
         raise Exception
     pass
 
-sum = 0
-pairIndex = 0
+packets = []
 for line in lines:
-    pairIndex += 1
-    first = line.strip()
-    second = next(lines).strip()
-    try:
-        blank = next(lines)
-    except:
-        pass
-    exec(f'left = {first}')
-    exec(f'right = {second}')
+    if len(line)> 1:
+        expression = line.strip()
+        exec(f'val = {expression}')
+        packets.append(val)
 
-    ret = mysort( left, right )
-    if ret:
-        sum += pairIndex
+from functools import cmp_to_key
+divOne = [[2]]
+divTwo = [[6]]
+packets.append(divOne)
+packets.append(divTwo)
+sPackets = sorted(packets, key=cmp_to_key(mysort))
 
-print("Part One", sum)
+
+
+
+one = sPackets.index(divOne) + 1
+two = sPackets.index(divTwo) + 1
+pass
+
+print("Part Two", one*two)
 
 
 
